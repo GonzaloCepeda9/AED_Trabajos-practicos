@@ -7,14 +7,13 @@ class List(list):
     CRITERION_FUNCTIONS = {}
 
     def add_criterion(self, key_criterion: str, function):
-        self.CRITERION_FUNCTIONS[key_criterion] = function # Sintaxis para agregar clave-valor a un diccionario: diccionario[clave] = valor
+        self.CRITERION_FUNCTIONS[key_criterion] = function
 
     def insert_value(self, value: Any) -> None:
         self.append(value)
 
     def delete_value(self, key_value: str, value) -> Optional[Any]:
         position = self.search(key_value, value)
-        # return self.pop(position) if position is not None else position
         if position is not None:
             return self.pop(position)
         else:
@@ -38,7 +37,7 @@ class List(list):
         middle = (start + end) // 2
 
         while start <= end:
-            value = criterion(self[middle]) if criterion else self[middle] # Si hay criterio se ejecuta la función; si no, se pasa el dato directamente.
+            value = criterion(self[middle]) if criterion else self[middle]
             if value == search_value:
                 return middle
             elif value < search_value:

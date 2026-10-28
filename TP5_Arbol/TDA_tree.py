@@ -10,7 +10,7 @@ class BinaryTree:
             self.other_values = other_values
             self.left = None
             self.right = None
-            self.height = 0                     # Convención: Un nodo hoja tiene altura 0, y un nodo inexistente (None) tiene altura -1
+            self.height = 0
 
     def __init__(self):
         self.root = None
@@ -19,24 +19,19 @@ class BinaryTree:
         def __insert(root, value, other_values):
             if root is None:
                 nodo = BinaryTree.__nodeTree(value, other_values)
-                # print(f'Nuevo nodo: {nodo.value}')
                 return nodo
             elif value < root.value:
                 root.left = __insert(root.left, value, other_values)
-                # print(f'Nodo izquierdo: {root.left.value}')
             else:
                 root.right = __insert(root.right, value, other_values)
-                # print(f'Nodo derecho: {root.right.value}')
 
-            # print(f'Nodo root: {root.value}')
             root = self.auto_balance(root)
             self.update_height(root)
             return root
-        # print('----------------------------------------------------')
 
         self.root = __insert(self.root, value, other_values)
 
-    def in_order(self):                                     # in_order = IZQ → RAÍZ → DER (de menor a mayor)
+    def in_order(self):
         def __in_order(root):
             if root is not None:
                 __in_order(root.left)
@@ -46,17 +41,7 @@ class BinaryTree:
         if self.root is not None:
             __in_order(self.root)
 
-    # def in_order_inverse(self):                             # in_order_inverse = DER → RAÍZ → IZQ (de mayor a menor) || Según otras bibliografías
-    #     def __in_order_inverse(root):
-    #         if root is not None:
-    #             __in_order_inverse(root.right)
-    #             print(f'  → {root.value}')
-    #             __in_order_inverse(root.left)
-
-    #     if self.root is not None:
-    #         __in_order_inverse(self.root)
-
-    def post_order(self):                                   # DER → RAÍZ → IZQ (mayor a menor según Walter Bel) // IZQ → DER → RAÍZ (según otras bibliografías: Cormen, Weiss, Brassard-Bratley, Knuth, etc.)
+    def post_order(self):
         def __post_order(root):
             if root is not None:
                 __post_order(root.right)
@@ -66,7 +51,7 @@ class BinaryTree:
         if self.root is not None:    
             __post_order(self.root)
 
-    def pre_order(self):                                    # RAÍZ → IZQ → DER
+    def pre_order(self):
             def __pre_order(root):
                 if root is not None:
                     print(f'  → {root.value}')
@@ -76,7 +61,7 @@ class BinaryTree:
             if self.root is not None:
                 __pre_order(self.root)
 
-    def by_level(self):                                     # by_level = NIVEL 1 → NIVEL 2 → ... → NIVEL n (por nivel)
+    def by_level(self):
         tree_queue = Queue()
         if self.root is not None:
             tree_queue.arrive(self.root)
@@ -93,21 +78,18 @@ class BinaryTree:
         def __search(root, value):
             if root is not None:
                 if value == root.value:
-                    # print(f'Valor encontrado')  # Este print sería "procesar el nodo".
                     return root
                 elif value < root.value:
-                    # print(f'Me voy a buscar a la izquierda')
                     return __search(root.left, value)
                 else:
-                    # print(f'Me voy a buscar a la derecha')
                     return __search(root.right, value)
         aux = None
-        if self.root is not None:                   # Antes de llamar a la función, verifica que la raíz no sea None.
+        if self.root is not None:
             aux = __search(self.root, value)
         return aux
 
     def proximity_search(self, value: Any) -> __nodeTree:
-        def __search(root, value):                  # Barrido con filtro (recorre todo el árbol, si cumple la condición, imprime)
+        def __search(root, value):
             if root is not None:
                 if root.value.startswith(value):
                     print(root.value)
@@ -123,15 +105,12 @@ class BinaryTree:
         
         def __replace(root):
 
-            # Caso 3A → El mayor del subárbol izquierdo es la raíz del subárbol izquierdo
             if root.right is None:
                 return root.left, root
-
-            # Caso 3B → El mayor del subárbol izquierdo NO es la raíz del subárbol izquierdo (debe buscar el último nodo de la derecha)
             else:
                 root.right, replace_node = __replace(root.right)
-                root = self.auto_balance(root)        # Balancea el subárbol del que se extrajo el mayor
-                self.update_height(root)              # Actualiza su altura tras la extracción y posible rotación
+                root = self.auto_balance(root)
+                self.update_height(root)
                 return root, replace_node
 
         def __delete(root, value):
@@ -149,29 +128,23 @@ class BinaryTree:
                 root.right, deleted_value, deleted_other_values = __delete(root.right, value)
 
             else:
-
-                # Nodo encontrado: capturamos lo que se va a eliminar
                 deleted_value = root.value
                 deleted_other_values = root.other_values
 
-                # Caso 1 → El nodo no tiene hijos
                 if root.left is None and root.right is None:
-                    return None, deleted_value, deleted_other_values # Al devolver None, el nodo padre deja de apuntar al valor encontrado y apunta a None. Entonces, queda desconectado del árbol (al buscado ya nadie lo referencia).
+                    return None, deleted_value, deleted_other_values
 
-                # Caso 2 → El nodo tiene un solo hijo
                 elif root.left is None:
                     return root.right, deleted_value, deleted_other_values
                 
                 elif root.right is None:
                     return root.left, deleted_value, deleted_other_values
-
-                # Caso 3 → El nodo tiene hijo izquierdo e hijo derecho (llama a la función/helper __replace)
+                
                 else:
                     root.left, replace_node = __replace(root.left)
                     root.value = replace_node.value
                     root.other_values = replace_node.other_values
 
-            # Rebalanceo del árbol solo si el subárbol no quedó vacío
             if root is not None:
                 root = self.auto_balance(root)
                 self.update_height(root)
@@ -200,12 +173,10 @@ class BinaryTree:
 
     def simple_rotation(self, root, control):
         if control:
-        # Si control es True, quiere decir que está cargado a la izquierda, por lo tanto se realiza una rotación simple a la derecha.
             aux = root.left
             root.left = aux.right
             aux.right = root
         else:
-        # Si control es False, quiere decir que está cargado a la derecha, por lo tanto se realiza una rotación simple a la izquierda.
             aux = root.right
             root.right = aux.left
             aux.left = root
@@ -239,14 +210,10 @@ class BinaryTree:
                     root = self.double_rotation(root, control)
         return root
 
-        # Si control es True, quiere decir que está cargado a la izquierda, por lo tanto se realiza una rotación simple a la derecha.
-
-        # Si control es False, quiere decir que está cargado a la derecha, por lo tanto se realiza una rotación simple a la izquierda.
-
     def divide_tree(self, arbol_v, arbol_f, condition):
         def __divide_tree(root, arbol_v, arbol_f, condition):
             if root is not None:
-                if root.other_values[condition] is True:        # Si la condición es verdadera, lo inserto en arbol_v; si la condición es falsa, lo inserto en arbol_f. De esta forma queda más genérico, y solo cambio la condición según el ejercicio.
+                if root.other_values[condition] is True:
                     arbol_v.insert(root.value, root.other_values)
                 else:
                     arbol_f.insert(root.value, root.other_values)
@@ -254,27 +221,3 @@ class BinaryTree:
                 __divide_tree(root.right, arbol_v, arbol_f, condition)
 
         __divide_tree(self.root, arbol_v, arbol_f, condition)
-
-# Pasar al ejercicio específico en donde se usa.
-
-    def in_order_height(self):
-        def __in_order_height(root):
-            if root is not None:
-                __in_order_height(root.left)
-                if root.other_values['height'] > 100:
-                    print(f'  → {root.value}')            # Este print sería "procesar el nodo".
-                __in_order_height(root.right)
-
-        if self.root is not None:
-            __in_order_height(self.root)
-        
-    def in_order_weight(self):
-        def __in_order_weight(root):
-            if root is not None:
-                __in_order_weight(root.left)
-                if root.other_values['weight'] > 100:
-                    print(f'  → {root.value}')            # Este print sería "procesar el nodo".
-                __in_order_weight(root.right)
-
-        if self.root is not None:
-            __in_order_weight(self.root)

@@ -94,20 +94,7 @@ class BinaryTreePersonajes(BinaryTree):
 
     # g. generar un bosque a partir de este árbol, un árbol debe contener a los superhéroes y otro a los villanos, luego resolver las siguiente tareas:
 
-    def insertar_por_campo(self, value: Any, other_values: Optional[Any] = None):
-        def __insertar_por_campo(root, value, other_values):
-            if root is None:
-                nodo = BinaryTree.__nodeTree(value, other_values)
-                return nodo
-            elif other_values['is_villain'] == False:
-                root.left = __insertar_por_campo(root.left, value, other_values)
-            else:
-                root.right = __insertar_por_campo(root.right, value, other_values)
-            return root
-
-        self.root = __insertar_por_campo(self.root, value, other_values)
-
-    #     I. determinar cuántos nodos tiene cada árbol;
+    # I. determinar cuántos nodos tiene cada árbol;
 
     def determinar_superheroe_o_supervillano(self: BinaryTree):
         def __determinar_superheroe_o_supervillano(root, contador_superheroes: int = 0, contador_supervillanos: int = 0):
@@ -124,8 +111,6 @@ class BinaryTreePersonajes(BinaryTree):
             return 0, 0
 
         return __determinar_superheroe_o_supervillano(self.root)
-
-    #     II. realizar un barrido ordenado alfabéticamente de cada árbol.
 
 # --------- CARGA DE DATOS --------- #
 
@@ -166,7 +151,7 @@ print(f'{Color.VIOLETA}Resultado:{Color.RESET}')
 print(f'  → En el campo "other_values" de cada nodo del árbol se almacenó el campo booleano "is_villain".')
 
 # b. listar los villanos ordenados alfabéticamente;
-print_seccion('# b. listar los villanos ordenados alfabéticamente;')
+print_seccion('b. listar los villanos ordenados alfabéticamente;')
 print(f'{Color.VIOLETA}Resultado:{Color.RESET}')
 arbol_personajes.listar_villanos()
 
@@ -222,27 +207,26 @@ print(f'{Color.VIOLETA}Resultado:{Color.RESET}')
 arbol_personajes.listar_superheroes_descendente()
 
 # g. generar un bosque a partir de este árbol, un árbol debe contener a los superhéroes y otro a los villanos, luego resolver las siguiente tareas:
-print_seccion('g. generar un bosque a partir de este árbol...')
-print(f'{Color.VIOLETA}Resultado:{Color.RESET}')
-print(f'  → Aún no desarrollado en clase.')
+print_seccion('g. generar un bosque a partir de este árbol, un árbol debe contener a los superhéroes y otro a los villanos,')
+print_seccion_extra('luego resolver las siguiente tareas:')
+arbol_v = BinaryTree()
+arbol_f = BinaryTree()
+condition = 'is_villain'
+arbol_personajes.divide_tree(arbol_v, arbol_f, condition)
 
 #     I. determinar cuántos nodos tiene cada árbol;
 print_seccion_extra('\nI. determinar cuántos nodos tiene cada árbol;')
-cantidad_superheroes, cantidad_supervillanos = arbol_personajes.determinar_superheroe_o_supervillano()
 print(f'{Color.VIOLETA}Resultado:{Color.RESET}')
+cantidad_superheroes, cantidad_supervillanos = arbol_personajes.determinar_superheroe_o_supervillano()
 print(f'  → El subárbol de superhéroes contiene {cantidad_superheroes} nodos.')
 print(f'  → El subárbol de supervillanos contiene {cantidad_supervillanos} nodos.')
 
 #     II. realizar un barrido ordenado alfabéticamente de cada árbol.
 print_seccion_extra('\nII. realizar un barrido ordenado alfabéticamente de cada árbol.')
-arbol_v = BinaryTree()
-arbol_f = BinaryTree()
-condition = 'is_villain'
-arbol_personajes.divide_tree(arbol_v, arbol_f, condition)
 print(f'{Color.VIOLETA}Resultado:{Color.RESET}')
 print(f'\n  Árbol de superhéroes ordenado alfabéticamente: ')
-arbol_v.in_order()
-print(f'\n  Árbol de supervillanos ordenado alfabéticamente: ')
 arbol_f.in_order()
+print(f'\n  Árbol de supervillanos ordenado alfabéticamente: ')
+arbol_v.in_order()
 
 print(f'\n{Color.CIAN}{f" FIN DE EJECUCIÓN DEL PROGRAMA ".center(140, "=")}{Color.RESET}')

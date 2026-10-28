@@ -126,7 +126,6 @@ class BinaryTreeCriaturas(BinaryTree):
         def __listar_por_coincidencia(root, coincidencia):
             if root is not None:
                 __listar_por_coincidencia(root.left, coincidencia)
-                # if root.value.startswith(coincidencia) or coincidencia in root.value:
                 if coincidencia in root.value:
                     print(f'  → {root.value}')
                 __listar_por_coincidencia(root.right, coincidencia)

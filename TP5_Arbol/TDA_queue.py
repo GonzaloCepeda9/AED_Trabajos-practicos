@@ -11,18 +11,10 @@ class Queue:
         self.__elements.append(value)
 
     def attention(self) -> Optional[Any]:
-        # Versión estándar:
         if self.__elements:
             return self.__elements.pop(0)
         else:
             return None
-        
-        # # Versión opcional acortada:
-        # return (
-        #     self.__elements(0)
-        #     if self.__elements|
-        #     else None
-        # )
 
     def on_front(self) -> Optional[Any]:
         if self.__elements:
