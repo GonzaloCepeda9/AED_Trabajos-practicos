@@ -15,11 +15,21 @@ g. generar un bosque a partir de este árbol, un árbol debe contener a los supe
 from TDA_list import List
 from TDA_tree import BinaryTree
 from ej5_lista_personajes_comic import lista_personajes_comic
-from typing import Any, Optional
+from typing import Any
 
 # --------- CREACIÓN DE FUNCIONES ADICIONALES --------- #
 
 class BinaryTreePersonajes(BinaryTree):
+
+    def in_order_completo(self):
+        def __in_order_completo(root):
+            if root is not None:
+                __in_order_completo(root.left)
+                print(f'  → Personaje: {root.value} | Año de aparición: {root.other_values['anio_aparicion']} | Casa comic: {root.other_values['casa_comic']} | Biografía: {root.other_values['biografia']} | Es villano: {root.other_values['is_villain']}')
+                __in_order_completo(root.right)
+
+        if self.root is not None:
+            __in_order_completo(self.root)
 
     # b. listar los villanos ordenados alfabéticamente;
     
@@ -112,6 +122,18 @@ class BinaryTreePersonajes(BinaryTree):
 
         return __determinar_superheroe_o_supervillano(self.root)
 
+    # II. realizar un barrido ordenado alfabéticamente de cada árbol.
+
+    def in_order_is_villain(self):
+        def __in_order_is_villain(root):
+            if root is not None:
+                __in_order_is_villain(root.left)
+                print(f'  → Personaje: {root.value} | Es villano: {root.other_values['is_villain']}')
+                __in_order_is_villain(root.right)
+
+        if self.root is not None:
+            __in_order_is_villain(self.root)
+
 # --------- CARGA DE DATOS --------- #
 
 arbol_personajes = BinaryTreePersonajes()
@@ -142,7 +164,7 @@ print(f'\n{Color.CIAN}{f' EJERCICIO 5: PERSONAJES DE MARVEL CINEMATIC UNIVERSE (
 
 print_seccion('Información completa de personajes')
 print(f'{Color.AZUL}Lista original ordenada alfabéticamente:{Color.RESET}')
-arbol_personajes.in_order()
+arbol_personajes.in_order_completo()
 
 # a. además del nombre del superhéroe, en cada nodo del árbol se almacenará un campo booleano que indica si es un héroe o un villano, True y False respectivamente;
 print_seccion('a. además del nombre del superhéroe, en cada nodo del árbol se almacenará un campo booleano')
@@ -177,7 +199,6 @@ print(f'{Color.VIOLETA}Resultado:{Color.RESET}')
 buscado = 'Dr. Strange'
 coincidencia_buscada = 'D'
 coincidencias = arbol_personajes.proximity_search(coincidencia_buscada)
-
 if not coincidencias.is_empty():
 
     print(f'  → Coincidencias encontradas para "{coincidencia_buscada}".')
@@ -192,7 +213,7 @@ if not coincidencias.is_empty():
             arbol_personajes.delete('Dr. Strange')
             arbol_personajes.insert('Doctor Strange', aux_other_values)
             print(f'\n  → El nombre del personaje "{buscado}" ha sido modificado correctamente.')
-            print(f'{Color.AZUL}\nLista actualizada:{Color.RESET}')
+            print(f'{Color.AZUL}\nÁrbol actualizado: {Color.RESET}')
             arbol_personajes.in_order()
             break
 
@@ -209,8 +230,8 @@ arbol_personajes.listar_superheroes_descendente()
 # g. generar un bosque a partir de este árbol, un árbol debe contener a los superhéroes y otro a los villanos, luego resolver las siguiente tareas:
 print_seccion('g. generar un bosque a partir de este árbol, un árbol debe contener a los superhéroes y otro a los villanos,')
 print_seccion_extra('luego resolver las siguiente tareas:')
-arbol_v = BinaryTree()
-arbol_f = BinaryTree()
+arbol_v = BinaryTreePersonajes()
+arbol_f = BinaryTreePersonajes()
 condition = 'is_villain'
 arbol_personajes.divide_tree(arbol_v, arbol_f, condition)
 
@@ -224,9 +245,10 @@ print(f'  → El subárbol de supervillanos contiene {cantidad_supervillanos} no
 #     II. realizar un barrido ordenado alfabéticamente de cada árbol.
 print_seccion_extra('\nII. realizar un barrido ordenado alfabéticamente de cada árbol.')
 print(f'{Color.VIOLETA}Resultado:{Color.RESET}')
-print(f'\n  Árbol de superhéroes ordenado alfabéticamente: ')
-arbol_f.in_order()
-print(f'\n  Árbol de supervillanos ordenado alfabéticamente: ')
-arbol_v.in_order()
+
+print(f'{Color.AZUL}\n  Árbol de superhéroes ordenado alfabéticamente: {Color.RESET}')
+arbol_f.in_order_is_villain()
+print(f'{Color.AZUL}\n  Árbol de supervillanos ordenado alfabéticamente: {Color.RESET}')
+arbol_v.in_order_is_villain()
 
 print(f'\n{Color.CIAN}{f" FIN DE EJECUCIÓN DEL PROGRAMA ".center(140, "=")}{Color.RESET}')
