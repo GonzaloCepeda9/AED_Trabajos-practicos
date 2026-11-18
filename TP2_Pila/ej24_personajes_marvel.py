@@ -7,7 +7,7 @@
 """
 
 from stack import Stack
-from personaje import Personaje
+from ej24_class_personaje import Personaje
 
 pila_personajes = Stack()
 
